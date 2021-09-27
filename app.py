@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 app = Flask(__name__)
 
 
@@ -21,7 +22,9 @@ def chatbot():
         reply = "懶人包"
     elif "市值" in context:
         reply = "市值"
-    return reply
+
+    result = jsonify({"data": reply, "errors": ""})
+    return result, 200
 
 
 app.run()
