@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
-app = Flask(__name__)
 
+import fun
+
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -15,13 +17,13 @@ def chatbot():
     print(context)
     reply = ""
     if "新聞" in context:
-        reply = "新聞"
+        reply = fun.news()
     elif "走勢" in context:
-        reply = "走勢"
+        reply = fun.trend()
     elif "懶人包" in context:
-        reply = "懶人包"
+        reply = fun.tutorial()
     elif "市值" in context:
-        reply = "市值"
+        reply = fun.price()
 
     result = jsonify({"data": reply, "errors": ""})
     return result, 200
