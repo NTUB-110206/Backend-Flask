@@ -1,14 +1,18 @@
-from flask import Flask
-from flask import request
-from flask import jsonify
+from app import app
+from flask import jsonify, request
+from app.model.News import News, NewsSchema
+from app.controller import fun
+from flask_cors import CORS
 
-import fun
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, support_credentials=True)
 
-app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def index():
-    return "Hello Flask"
+    result = News.query.limit(5).all()
+    output = NewsSchema(many=True).dump(result)
+    return jsonify({'news':output}), 200
 
 
 @app.route("/chatbot", methods=['POST'])
@@ -27,6 +31,3 @@ def chatbot():
 
     result = jsonify({"data": reply, "errors": ""})
     return result, 200
-
-
-app.run()
