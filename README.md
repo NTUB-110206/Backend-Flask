@@ -13,6 +13,7 @@ pip install -r requirements.txt
 - for macOS
 ```
 pip3 install -r requirements.txt
+pip3.9 install psycopg2-binary --force-reinstall --no-cache-dir
 ```
 
 ### Start
