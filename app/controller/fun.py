@@ -9,3 +9,6 @@ def tutorial():
 
 def price():
     return "市值"
+
+def unknown():
+    return "unknown"
