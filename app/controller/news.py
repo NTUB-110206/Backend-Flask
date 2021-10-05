@@ -1,4 +1,4 @@
-from app.model.News import News, NewsSchema
+from app.model.News import News, NewsSchema, Category, CategorySchema
 import re
 
 
@@ -9,12 +9,16 @@ def read(limit):
     else:
         result = News.query.all()
     output = NewsSchema(many=True).dump(result)
-
     return {'news': output}
 
 
 def create():
-    return {'news': "create"}
+    result = Category.query.all()
+    print(result)
+    output = CategorySchema(many=True).dump(result)
+    print(output)
+    return {'news': output}
+    # return {'news': "create"}
 
 
 def update():
