@@ -3,6 +3,8 @@ setting.py
 run.bat
 start.bat
 upload.bat
+active.bat
+backend-env/
 .vscode
 __pycache__
 
