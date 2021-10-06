@@ -7,6 +7,10 @@ class Category(db.Model):
     category_id = db.Column(db.Integer, primary_key=True)
     category_label = db.Column(db.String(255))
 
+class Trend(db.Model):
+    __tablename__ = 'bcd_trend'
+    trend_id = db.Column(db.Integer, primary_key=True)
+    trend_label = db.Column(db.String(255))
 
 class News(db.Model):
     __tablename__ = 'bcd_news'
@@ -17,18 +21,29 @@ class News(db.Model):
     news_website = db.Column(db.String(255))
     news_link = db.Column(db.String(255))
     img_link = db.Column(db.String(255))
-    category_id = db.Column(db.Integer, db.ForeignKey('bcd_category.category_id'), nullable=False)
-    category_label = db.relationship(Category, backref="bcd_category.category_label")
-    # trend = db.Column(db.String(255))
+    category_id = db.Column(db.Integer, db.ForeignKey('bcd_category.category_id'))
+    category = db.relationship("Category", backref="bcd_news")
+    trend_id = db.Column(db.Integer, db.ForeignKey('bcd_trend.trend_id'))
+    trend = db.relationship("Trend", backref="bcd_news")
 
-class CategorySchema(ma.SQLAlchemySchema):
+
+class CategorySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Category
-        fields=("category_id", "category_label")
-        load_instance = True
+    # bcd_news = ma.auto_field()
+
+
+class TrendSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Trend
+
 
 class NewsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = News
-        include_fk = True
         load_instance = True
+        include_relationships = True
+        include_fk = True
+        exclude=["category_id", "trend_id"]
+    category = fields.Nested(CategorySchema)
+    trend = fields.Nested(TrendSchema)
