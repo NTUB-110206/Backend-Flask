@@ -1,5 +1,6 @@
 from sqlalchemy import desc
 from app.model.News import News, NewsSchema
+from app import db
 import re
 
 
@@ -29,8 +30,20 @@ def read(args):
     return {'news': output}
 
 
-def create():
-    return {'news': "create"}
+def create(args):
+    for n in args:
+        news_datetime = n.get('news_datetime')
+        news_title = n.get('news_title')
+        news_content = n.get('news_content')
+        news_website = n.get('news_website')
+        news_link = n.get('news_link')
+        img_link = n.get('img_link')
+        category_id = n.get('category_id')
+        trend_id = n.get('trend_id')
+        create_news = News(news_datetime=news_datetime, news_title=news_title, news_content=news_content, news_website=news_website, news_link=news_link, img_link=img_link, category_id=category_id, trend_id=trend_id)
+        db.session.add(create_news)
+    db.session.commit()
+    return {'result': 'create success'}
 
 
 def update():

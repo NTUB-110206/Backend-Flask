@@ -22,7 +22,7 @@ def newslist():
         return jsonify(output), 200
 
     elif request.method == 'POST':
-        output = news.create()
+        output = news.create(request.json["news"])
         return jsonify(output), 200
 
     elif request.method == 'PUT':
