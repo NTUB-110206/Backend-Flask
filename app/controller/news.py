@@ -46,5 +46,28 @@ def create(args):
     return {'result': 'create success'}, 200
 
 
-def update():
-    return {'result': "create update"}, 200
+def update(args):
+    if len([news for news in args if (news.get('news_id') is None)|(news.get('news_datetime') is None)]): 
+        return 'news_id & datetime is required', 400
+    
+    # sort array by key = 'news_datetime'
+    args = sorted(args, key=lambda k: k['news_datetime'], reverse=False)
+
+    # get query
+    oriNews_list = News.query.filter(News.news_datetime >= args[0]['news_datetime']).order_by(desc('news_datetime')).all()
+    
+    # loop by new array
+    for n in args:
+        new_category = n.get('category_id')
+        new_trend = n.get('trend_id')
+
+        # find ori.news_id == n.news_id
+        news = [ori for ori in oriNews_list if ori.news_id == n.get('news_id')][0]
+        if new_category is not None:
+            news.category_id = new_category
+        if new_trend is not None:
+            news.trend_id = new_trend
+
+        db.session.add(news)
+    db.session.commit()
+    return {'result': 'update success'}, 200
