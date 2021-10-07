@@ -25,9 +25,8 @@ def read(args):
     if limit is not None:
         limit = int(re.sub(r'\D', "", limit))
         result = result.limit(limit)
-
     output = NewsSchema(many=True).dump(result.all())
-    return {'news': output}
+    return {'news': output}, 200
 
 
 def create(args):
@@ -40,11 +39,12 @@ def create(args):
         img_link = n.get('img_link')
         category_id = n.get('category_id')
         trend_id = n.get('trend_id')
-        create_news = News(news_datetime=news_datetime, news_title=news_title, news_content=news_content, news_website=news_website, news_link=news_link, img_link=img_link, category_id=category_id, trend_id=trend_id)
+        create_news = News(news_datetime=news_datetime, news_title=news_title, news_content=news_content,
+                           news_website=news_website, news_link=news_link, img_link=img_link, category_id=category_id, trend_id=trend_id)
         db.session.add(create_news)
     db.session.commit()
-    return {'result': 'create success'}
+    return {'result': 'create success'}, 200
 
 
 def update():
-    return {'news': "update"}
+    return {'result': "create update"}, 200
