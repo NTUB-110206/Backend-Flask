@@ -1,9 +1,11 @@
 # backend-flask
 
 ### env
-#### You must fill the following variables in your app/setting.py file:
+#### You must fill the following variables in your .env file:
 - SECRET_KEY
 - SQLALCHEMY_DATABASE_URI
+- DEBUG ( option )
+- SQLALCHEMY_TRACK_MODIFICATIONS ( option )
 
 #### init virtual environment
 - for Windows
