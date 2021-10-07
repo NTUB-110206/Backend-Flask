@@ -18,17 +18,16 @@ def index():
 @app.route('/newslist', methods=['GET', 'POST', 'PUT'])
 def newslist():
     if request.method == 'GET':
-        limit = request.args.get('limit')
-        output = news.read(limit)
-        return jsonify(output), 200
+        output, status  = news.read(request.args)
+        return jsonify(output), status
 
     elif request.method == 'POST':
-        output = news.create()
-        return jsonify(output), 200
+        output, status  = news.create(request.json["news"])
+        return jsonify(output), status
 
     elif request.method == 'PUT':
-        output = news.update()
-        return jsonify(output), 200
+        output, status = news.update(request.json["news"])
+        return jsonify(output), status
 
 
 @app.route("/chatbot", methods=['POST'])
