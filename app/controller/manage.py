@@ -1,7 +1,7 @@
 from app import app
 from flask import jsonify, request
 from app.model.News import News, NewsSchema
-from app.controller import fun, news
+from app.controller import fun, news, nlp
 from flask_cors import CORS
 
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -33,18 +33,19 @@ def newslist():
 @app.route("/chatbot", methods=['POST'])
 def chatbot():
     context = str(request.json["context"])
-    print(context)
-    reply = ""
-    if "新聞" in context:
+    result = nlp.nlp(context)
+    if "新聞" in result:
         reply = fun.news()
-    elif "走勢" in context:
+    elif "走勢" in result:
         reply = fun.trend()
-    elif "懶人包" in context:
+    elif "教學" in result:
         reply = fun.tutorial()
-    elif "市值" in context:
+    elif "市值" in result:
+        reply = fun.price()
+    elif "關於更多" in result:
         reply = fun.price()
     else:
-        reply = fun.unknown()
+        reply = fun.unknown(context)
 
     result = jsonify({"data": reply, "errors": ""})
     return result, 200

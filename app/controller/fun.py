@@ -10,5 +10,5 @@ def tutorial():
 def price():
     return "市值"
 
-def unknown():
+def unknown(context):
     return "unknown"
