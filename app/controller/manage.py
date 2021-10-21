@@ -42,8 +42,6 @@ def chatbot():
         reply = fun.tutorial()
     elif "市值" in result:
         reply = fun.price()
-    elif "關於更多" in result:
-        reply = fun.price()
     else:
         reply = fun.unknown(context)
 
