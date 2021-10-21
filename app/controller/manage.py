@@ -18,11 +18,11 @@ def index():
 @app.route('/newslist', methods=['GET', 'POST', 'PUT'])
 def newslist():
     if request.method == 'GET':
-        output, status  = news.read(request.args)
+        output, status = news.read(request.args)
         return jsonify(output), status
 
     elif request.method == 'POST':
-        output, status  = news.create(request.json["news"])
+        output, status = news.create(request.json["news"])
         return jsonify(output), status
 
     elif request.method == 'PUT':
@@ -36,14 +36,18 @@ def chatbot():
     result = nlp.nlp(context)
     if "新聞" in result:
         reply = fun.news()
+        function = "news"
     elif "走勢" in result:
         reply = fun.trend()
+        function = "trend"
     elif "教學" in result:
         reply = fun.tutorial()
+        function = "tutorial"
     elif "市值" in result:
         reply = fun.price()
+        function = "price"
     else:
-        reply = fun.unknown(context)
-
-    result = jsonify({"data": reply, "errors": ""})
+        reply = fun.gSearch(context)
+        function = "gSearch"
+    result = jsonify({"function": function, "data": reply, "errors": ""})
     return result, 200
