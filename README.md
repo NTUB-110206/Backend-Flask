@@ -15,7 +15,7 @@ python -m pip install --upgrade pip
 ```
 - for macOS
 ```
-python -m venv backend-env
+python3 -m venv backend-env
 python3 -m pip install --upgrade pip 
 ```
 
