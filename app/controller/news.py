@@ -6,7 +6,6 @@ import re
 
 def read(news_id_filter=None, news_website_filter=None, category_filter=None, trend_filter=None, datetime_filter=None, limit=None):
     result = News.query.order_by(desc('news_datetime'))
-    print("read---",  trend_filter, datetime_filter)
     if news_id_filter is not None:
         news_id_filter = int(re.sub(r'\D', "", news_id_filter))
         result = result.filter(News.news_id == news_id_filter)
