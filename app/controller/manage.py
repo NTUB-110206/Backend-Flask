@@ -18,7 +18,12 @@ def index():
 @app.route('/newslist', methods=['GET', 'POST', 'PUT'])
 def newslist():
     if request.method == 'GET':
-        output, status = news.read(request.args)
+        output, status = news.read(news_id_filter=request.args.get('news_id'),
+                                   news_website_filter=request.args.get('news_website'),
+                                   category_filter=request.args.get('category'),
+                                   trend_filter=request.args.get('trend'),
+                                   datetime_filter=request.args.get('datetime'),
+                                   limit=request.args.get('limit'))
         return jsonify(output), status
 
     elif request.method == 'POST':
@@ -35,19 +40,19 @@ def chatbot():
     context = str(request.json["context"])
     result = classifyChatbot.classifyChatbot(context)
     if "新聞" in result:
-        reply = fun.news()
+        output, status = fun.get_news(context)
         function = "news"
     elif "走勢" in result:
-        reply = fun.trend()
+        output, status = fun.get_trend(context)
         function = "trend"
     elif "教學" in result:
-        reply = fun.tutorial()
+        output, status = fun.get_tutorial(context)
         function = "tutorial"
     elif "市值" in result:
-        reply = fun.price()
+        output, status = fun.get_price(context)
         function = "price"
     else:
-        reply = fun.gSearch(context)
+        output, status = fun.gSearch(context)
         function = "gSearch"
-    result = jsonify({"function": function, "data": reply, "errors": ""})
-    return result, 200
+    result = jsonify({"function": function, "data": output, "errors": ""})
+    return result, status
