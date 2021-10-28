@@ -1,12 +1,24 @@
 import os
 import requests
 from datetime import date, timedelta
+from app.controller import news
 
 
 def get_news(context):
     # 今天 昨天 正面 負面
     dayFilter = dayFilterLogic(context)
-    return "新聞", 200
+    trend = None
+    if "正面" in context:
+        trend = "1"
+    elif "負面" in context:
+        trend = "0"
+
+    if dayFilter == "unknown":
+        output, status = gSearch(context)
+    else:
+        output, status = news.read(trend_filter=trend, datetime_filter=dayFilter)
+
+    return output, status
 
 
 def get_trend(context):
