@@ -40,19 +40,19 @@ def chatbot():
     context = str(request.json["context"])
     result = nlp.nlp(context)
     if "新聞" in result:
-        reply = fun.news()
+        output, status = fun.get_news(context)
         function = "news"
     elif "走勢" in result:
-        reply = fun.trend()
+        output, status = fun.get_trend(context)
         function = "trend"
     elif "教學" in result:
-        reply = fun.tutorial()
+        output, status = fun.get_tutorial(context)
         function = "tutorial"
     elif "市值" in result:
-        reply = fun.price()
+        output, status = fun.get_price(context)
         function = "price"
     else:
-        reply = fun.gSearch(context)
+        output, status = fun.gSearch(context)
         function = "gSearch"
-    result = jsonify({"function": function, "data": reply, "errors": ""})
-    return result, 200
+    result = jsonify({"function": function, "data": output, "errors": ""})
+    return result, status
