@@ -38,5 +38,7 @@ def dayFilterLogic(context):
         dayFilter = date.today() - timedelta(days=30)
     elif "今年" in context:
         dayFilter = date.today() - timedelta(days=365)
+    else:
+        dayFilter = "unknown"
 
     return dayFilter
