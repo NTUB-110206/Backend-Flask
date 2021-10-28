@@ -18,7 +18,12 @@ def index():
 @app.route('/newslist', methods=['GET', 'POST', 'PUT'])
 def newslist():
     if request.method == 'GET':
-        output, status = news.read(request.args)
+        output, status = news.read(news_id_filter=request.args.get('news_id'),
+                                   news_website_filter=request.args.get('news_website'),
+                                   category_filter=request.args.get('category'),
+                                   trend_filter=request.args.get('trend'),
+                                   datetime_filter=request.args.get('datetime'),
+                                   limit=request.args.get('limit'))
         return jsonify(output), status
 
     elif request.method == 'POST':
