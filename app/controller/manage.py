@@ -24,15 +24,15 @@ def newslist():
                                    trend_filter=request.args.get('trend'),
                                    datetime_filter=request.args.get('datetime'),
                                    limit=request.args.get('limit'))
-        return jsonify(output), status
+        return jsonify({"function": "getNews", "data": output, "errors": ""}), status
 
     elif request.method == 'POST':
         output, status = news.create(request.json["news"])
-        return jsonify(output), status
+        return jsonify({"function": "postNews", "data": output, "errors": ""}), status
 
     elif request.method == 'PUT':
         output, status = news.update(request.json["news"])
-        return jsonify(output), status
+        return jsonify({"function": "putNews", "data": output, "errors": ""}), status
 
 
 @app.route("/chatbot", methods=['POST'])
@@ -40,19 +40,14 @@ def chatbot():
     context = str(request.json["context"])
     result = classifyChatbot.classifyChatbot(context)
     if "新聞" in result:
-        output, status = fun.get_news(context)
-        function = "news"
+        output, function, status = fun.get_news(context)
     elif "走勢" in result:
-        output, status = fun.get_trend(context)
-        function = "trend"
+        output, function, status = fun.get_trend(context)
     elif "教學" in result:
-        output, status = fun.get_tutorial(context)
-        function = "tutorial"
+        output, function, status = fun.get_tutorial(context)
     elif "市值" in result:
-        output, status = fun.get_price(context)
-        function = "price"
+        output, function, status = fun.get_price(context)
     else:
-        output, status = fun.gSearch(context)
-        function = "gSearch"
+        output, function, status = fun.gSearch(context)
     result = jsonify({"function": function, "data": output, "errors": ""})
     return result, status
