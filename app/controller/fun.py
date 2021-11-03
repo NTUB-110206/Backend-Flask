@@ -43,9 +43,7 @@ def gSearch(context):
     key = os.getenv('GSEARCH_KEY')
 
     if len(cx) and len(key):
-        my_params = {'cx': cx, 'key': key, 'q': context}
-        res = requests.get('https://www.googleapis.com/customsearch/v1', params=my_params)
-        results = res.json()
+        results = WEB_API.get_gSeacrh_data(cx, key, context)
         return results['items'], "gSearch", 200
     else:
         return "gSearch cannot use", "gSearch", 200
