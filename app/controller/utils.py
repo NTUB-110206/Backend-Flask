@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from pandas.plotting import register_matplotlib_converters
 import pandas as pd
 import matplotlib
@@ -41,6 +41,6 @@ def dayFilterLogic(context):
     elif "今年" in context:
         dayFilter = date.today() - timedelta(days=365)
     else:
-        dayFilter = date.today() - timedelta(days=365)
+        dayFilter = "unknown"
 
     return dayFilter

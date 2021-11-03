@@ -1,4 +1,3 @@
-from werkzeug.wrappers import response
 from app import app
 from flask import jsonify, request, send_file
 from app.model.News import News, NewsSchema
@@ -44,7 +43,7 @@ def chatbot():
         response = jsonify({"data": output})
     elif "走勢" in result:
         output, function, status = fun.get_trend(context)
-        response = send_file(output, mimetype='image/jpeg')
+        response = send_file(output, mimetype='image/jpeg') if function == "getTrend" else jsonify({"data": output})
     elif "教學" in result:
         output, function, status = fun.get_tutorial(context)
         response = jsonify({"data": output})

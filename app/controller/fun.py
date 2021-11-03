@@ -1,6 +1,4 @@
 import os
-import requests
-from datetime import date, datetime, timedelta
 from app.controller import news, WEB_API, utils
 
 
@@ -24,14 +22,16 @@ def get_news(context):
 
 def get_trend(context):
     dayFilter = utils.dayFilterLogic(context)
-    limitday = utils.get_date(dayFilter)
-    if limitday==0:
-        data = WEB_API.get_crypto_data(limit=1)
+    if dayFilter == "unknown":
+        output, function, status = gSearch(context)
     else:
-        data = WEB_API.get_crypto_data(limit=limitday)
-    utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
+        limitday = utils.get_date(dayFilter)
+        data = WEB_API.get_crypto_data(limit=(1 if limitday==0 else limitday))
+        utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
+        function = "getTrend"
+        output = "../data/trend.jpg"
     
-    return "../data/trend.jpg", "getPrice", 200
+    return output, function, 200
 
 
 def get_tutorial(context):
@@ -42,12 +42,16 @@ def get_tutorial(context):
 def get_price(context):
     # 成交量 比特幣（個）＊單價
     dayFilter = utils.dayFilterLogic(context)
-    limitday = utils.get_date(dayFilter)
-    if limitday==0:
-        result = WEB_API.get_crypto_data(limit=1)[1]['close']
+    if dayFilter == "unknown":
+        output, function, status = gSearch(context)
     else:
-        result = WEB_API.get_crypto_data(limit=limitday)[0]['close']
-    return result, "getPrice", 200
+        limitday = utils.get_date(dayFilter)
+        if limitday==0:
+            output = WEB_API.get_crypto_data(limit=1)[1]['close']
+        else:
+            output = WEB_API.get_crypto_data(limit=limitday)[0]['close']
+        function = "getPrice"
+    return output, function, 200
 
 
 def gSearch(context):
