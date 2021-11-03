@@ -37,7 +37,7 @@ def newslist():
 
 @app.route("/chatbot", methods=['GET'])
 def chatbot():
-    context = str(request.json["context"])
+    context = request.args.get("context")
     result = classifyChatbot.classifyChatbot(context)
     if "新聞" in result:
         output, function, status = fun.get_news(context)
