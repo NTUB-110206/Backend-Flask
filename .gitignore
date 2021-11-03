@@ -4,6 +4,7 @@ start.bat
 upload.bat
 active.bat
 backend-env/
+data/*.jpg
 .vscode
 __pycache__
 .DS_Store
