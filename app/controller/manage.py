@@ -35,7 +35,7 @@ def newslist():
     return jsonify({"data": output}), status, {"function": function}
 
 
-@app.route("/chatbot", methods=['POST'])
+@app.route("/chatbot", methods=['GET'])
 def chatbot():
     context = str(request.json["context"])
     result = classifyChatbot.classifyChatbot(context)
