@@ -1,12 +1,12 @@
 import os
 import requests
-from datetime import date, timedelta
-from app.controller import news
+from datetime import date, datetime, timedelta
+from app.controller import news, WEB_API, utils
 
 
 def get_news(context):
     # 今天 昨天 正面 負面
-    dayFilter = dayFilterLogic(context)
+    dayFilter = utils.dayFilterLogic(context)
     trend = None
     if "正面" in context:
         trend = "1"
@@ -23,7 +23,7 @@ def get_news(context):
 
 
 def get_trend(context):
-    dayFilter = dayFilterLogic(context)
+    dayFilter = utils.dayFilterLogic(context)
     return "走勢", "getTrend", 200
 
 
@@ -34,7 +34,7 @@ def get_tutorial(context):
 
 def get_price(context):
     # 成交量 比特幣（個）＊單價
-    dayFilter = dayFilterLogic(context)
+    dayFilter = utils.dayFilterLogic(context)
     return "成交量", "getPrice", 200
 
 
@@ -48,20 +48,3 @@ def gSearch(context):
     else:
         return "gSearch cannot use", "gSearch", 200
 
-
-def dayFilterLogic(context):
-
-    if "今天" in context:
-        dayFilter = date.today()
-    elif "昨天" in context:
-        dayFilter = date.today() - timedelta(days=1)
-    elif "本週" in context:
-        dayFilter = date.today() - timedelta(weeks=7)
-    elif "本月" in context:
-        dayFilter = date.today() - timedelta(days=30)
-    elif "今年" in context:
-        dayFilter = date.today() - timedelta(days=365)
-    else:
-        dayFilter = "unknown"
-
-    return dayFilter
