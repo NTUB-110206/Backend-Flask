@@ -24,7 +24,8 @@ def classifyChatbot(context):
     predict = (sorted(zip(loaded_model.classes_, probs), key=lambda x: x[1], reverse=True)[0])
     result = predict[0]
     prob = predict[1]
-    if prob < 0.5:
+    print(predict)
+    if prob < 0.3:
         result = "unknown"
 
     return result
