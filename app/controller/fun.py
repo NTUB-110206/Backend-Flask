@@ -35,7 +35,12 @@ def get_tutorial(context):
 def get_price(context):
     # 成交量 比特幣（個）＊單價
     dayFilter = utils.dayFilterLogic(context)
-    return "成交量", "getPrice", 200
+    limitday = utils.get_date(dayFilter)
+    if limitday==0:
+        result = WEB_API.get_crypto_data(limit=1)[1]['close']
+    else:
+        result = WEB_API.get_crypto_data(limit=limitday)[0]['close']
+    return result, "getPrice", 200
 
 
 def gSearch(context):
