@@ -16,7 +16,7 @@ def get_news(context):
     if dayFilter == "unknown":
         output, function, status = gSearch(context)
     else:
-        output, status = news.read(trend_filter=trend, datetime_filter=dayFilter)
+        output, function, status = news.read(trend_filter=trend, datetime_filter=dayFilter)
         function = "getNews"
 
     return output, function, status
