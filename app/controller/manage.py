@@ -1,3 +1,4 @@
+from werkzeug.wrappers import response
 from app import app
 from flask import jsonify, request, send_file
 from app.model.News import News, NewsSchema
@@ -12,27 +13,26 @@ CORS(app, support_credentials=True)
 def index():
     result = News.query.limit(5).all()
     output = NewsSchema(many=True).dump(result)
-    return jsonify({'news': output}), 200
+    return jsonify({'news': output}), 200, {"function": "getNews"}
 
 
 @app.route('/newslist', methods=['GET', 'POST', 'PUT'])
 def newslist():
     if request.method == 'GET':
-        output, status = news.read(news_id_filter=request.args.get('news_id'),
+        output, function, status = news.read(news_id_filter=request.args.get('news_id'),
                                    news_website_filter=request.args.get('news_website'),
                                    category_filter=request.args.get('category'),
                                    trend_filter=request.args.get('trend'),
                                    datetime_filter=request.args.get('datetime'),
                                    limit=request.args.get('limit'))
-        return jsonify({"function": "getNews", "data": output, "errors": ""}), status
 
     elif request.method == 'POST':
-        output, status = news.create(request.json["news"])
-        return jsonify({"function": "postNews", "data": output, "errors": ""}), status
+        output, function, status = news.create(request.json["news"])
 
     elif request.method == 'PUT':
-        output, status = news.update(request.json["news"])
-        return jsonify({"function": "putNews", "data": output, "errors": ""}), status
+        output, function, status = news.update(request.json["news"])
+        
+    return jsonify({"data": output}), status, {"function": function}
 
 
 @app.route("/chatbot", methods=['POST'])
@@ -41,16 +41,17 @@ def chatbot():
     result = classifyChatbot.classifyChatbot(context)
     if "新聞" in result:
         output, function, status = fun.get_news(context)
-        return jsonify({"function": function, "data": output, "errors": ""}), status
+        response = jsonify({"data": output})
     elif "走勢" in result:
         output, function, status = fun.get_trend(context)
-        return send_file(output, mimetype='image/jpeg'), status
+        response = send_file(output, mimetype='image/jpeg')
     elif "教學" in result:
         output, function, status = fun.get_tutorial(context)
-        return jsonify({"function": function, "data": output, "errors": ""}), status
+        response = jsonify({"data": output})
     elif "成交量" in result:
         output, function, status = fun.get_price(context)
-        return jsonify({"function": function, "data": output, "errors": ""}), status
+        response = jsonify({"data": output})
     else:
         output, function, status = fun.gSearch(context)
-        return jsonify({"function": function, "data": output, "errors": ""}), status
+        response = jsonify({"data": output})
+    return response, status, {"function": function}

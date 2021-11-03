@@ -23,7 +23,7 @@ def read(news_id_filter=None, news_website_filter=None, category_filter=None, tr
         limit = int(re.sub(r'\D', "", limit))
         result = result.limit(limit)
     output = NewsSchema(many=True).dump(result.all())
-    return {'news': output}, 200
+    return {'news': output}, "getNews", 200
 
 
 def create(args):
@@ -40,7 +40,7 @@ def create(args):
                            news_website=news_website, news_link=news_link, img_link=img_link, category_id=category_id, trend_id=trend_id)
         db.session.add(create_news)
     db.session.commit()
-    return {'result': 'create success'}, 200
+    return {'result': 'create success'}, "postNews", 200
 
 
 def update(args):
@@ -67,4 +67,4 @@ def update(args):
 
         db.session.add(news)
     db.session.commit()
-    return {'result': 'update success'}, 200
+    return {'result': 'update success'}, "putNews", 200
