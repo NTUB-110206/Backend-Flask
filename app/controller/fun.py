@@ -24,7 +24,14 @@ def get_news(context):
 
 def get_trend(context):
     dayFilter = utils.dayFilterLogic(context)
-    return "走勢", "getTrend", 200
+    limitday = utils.get_date(dayFilter)
+    if limitday==0:
+        data = WEB_API.get_crypto_data(limit=1)
+    else:
+        data = WEB_API.get_crypto_data(limit=limitday)
+    utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
+    
+    return "../data/trend.jpg", "getPrice", 200
 
 
 def get_tutorial(context):

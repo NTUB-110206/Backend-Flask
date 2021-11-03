@@ -1,5 +1,5 @@
 from app import app
-from flask import jsonify, request
+from flask import jsonify, request, send_file
 from app.model.News import News, NewsSchema
 from app.controller import fun, news, classifyChatbot
 from flask_cors import CORS
@@ -41,13 +41,16 @@ def chatbot():
     result = classifyChatbot.classifyChatbot(context)
     if "新聞" in result:
         output, function, status = fun.get_news(context)
+        return jsonify({"function": function, "data": output, "errors": ""}), status
     elif "走勢" in result:
         output, function, status = fun.get_trend(context)
+        return send_file(output, mimetype='image/jpeg'), status
     elif "教學" in result:
         output, function, status = fun.get_tutorial(context)
-    elif "市值" in result:
+        return jsonify({"function": function, "data": output, "errors": ""}), status
+    elif "成交量" in result:
         output, function, status = fun.get_price(context)
+        return jsonify({"function": function, "data": output, "errors": ""}), status
     else:
         output, function, status = fun.gSearch(context)
-    result = jsonify({"function": function, "data": output, "errors": ""})
-    return result, status
+        return jsonify({"function": function, "data": output, "errors": ""}), status
