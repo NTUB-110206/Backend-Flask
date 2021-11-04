@@ -29,7 +29,7 @@ def get_trend(context):
         data = WEB_API.get_crypto_data(limit=(1 if limitday==0 else limitday))
         img_path = utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
         imgur_result = WEB_API.imgur_upload(img_path)
-        output, function = imgur_result['link'], "getTrend"
+        output, function = {'img_url': imgur_result['link'], 'width': imgur_result['width'], 'height': imgur_result['height']}, "getTrend"
     
     return output, function, 200
 
