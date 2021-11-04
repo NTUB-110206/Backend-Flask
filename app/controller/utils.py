@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from pandas.plotting import register_matplotlib_converters
 import pandas as pd
 import matplotlib
@@ -24,8 +24,9 @@ def plot_data(df, cryptocurrency='BTC', target_currency='USD', days=2000):
     plt.legend()
     plt.xticks(rotation=45)
     fig = plt.gcf()
-    fig.savefig('./data/trend.jpg', dpi=200)
-    return plt
+    img_path = './data/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
+    fig.savefig(img_path, dpi=200)
+    return img_path
 
 
 def dayFilterLogic(context):

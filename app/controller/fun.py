@@ -27,9 +27,9 @@ def get_trend(context):
     else:
         limitday = utils.get_date(dayFilter)
         data = WEB_API.get_crypto_data(limit=(1 if limitday==0 else limitday))
-        utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
-        function = "getTrend"
-        output = "../data/trend.jpg"
+        img_path = utils.plot_data(utils.data_to_dataframe(data), days=dayFilter)
+        imgur_result = WEB_API.imgur_upload(img_path)
+        output, function = imgur_result['link'], "getTrend"
     
     return output, function, 200
 

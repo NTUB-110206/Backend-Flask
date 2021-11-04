@@ -43,7 +43,7 @@ def chatbot():
         response = jsonify({"data": output})
     elif "走勢" in result:
         output, function, status = fun.get_trend(context)
-        response = send_file(output, mimetype='image/jpeg') if function == "getTrend" else jsonify({"data": output})
+        response = jsonify({"data": output})
     elif "教學" in result:
         output, function, status = fun.get_tutorial(context)
         response = jsonify({"data": output})
