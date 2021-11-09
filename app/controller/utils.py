@@ -22,7 +22,7 @@ def plot_data(df, cryptocurrency='BTC', target_currency='USD', days=2000):
     plt.title('{} / {} price data'.format(cryptocurrency, target_currency))
     plt.plot(df['time'], df['close'], label='BTC')
     plt.legend()
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=20)
     fig = plt.gcf()
     img_path = './data/'+datetime.strftime(datetime.now(), '%Y%m%d%H%M%S')+'-trend.jpg'
     fig.savefig(img_path, dpi=200)
