@@ -45,7 +45,7 @@ def create(args):
 
 def update(args):
     if len([news for news in args if (news.get('news_id') is None)|(news.get('news_datetime') is None)]): 
-        return 'news_id & datetime is required', 400
+        return 'news_id & datetime is required', "putNews", 400
     
     # sort array by key = 'news_datetime'
     args = sorted(args, key=lambda k: k['news_datetime'], reverse=False)
