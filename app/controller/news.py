@@ -12,10 +12,10 @@ def read(news_id_filter=None, news_website_filter=None, category_filter=None, tr
     if news_website_filter is not None:
         result = result.filter(News.news_website == news_website_filter)
     if category_filter is not None:
-        category_filter = int(re.sub(r'\D', "", category_filter))
+        category_filter = None if category_filter == 'NULL' else int(re.sub(r'\D', "", category_filter))
         result = result.filter(News.category_id == category_filter)
     if trend_filter is not None:
-        trend_filter = int(re.sub(r'\D', "", trend_filter))
+        trend_filter = None if trend_filter == 'NULL' else int(re.sub(r'\D', "", trend_filter))
         result = result.filter(News.trend_id == trend_filter)
     if datetime_filter is not None:
         result = result.filter(News.news_datetime >= datetime_filter)
