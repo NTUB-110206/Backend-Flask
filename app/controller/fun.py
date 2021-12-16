@@ -40,7 +40,7 @@ def get_trend(context):
 
 def get_tutorial(context):
     # template
-    return "教學", "getTutorial", 200
+    return os.getenv('Heroku_frontend')+"/#/tutorial", "getTutorial", 200
 
 
 def get_price(context):
