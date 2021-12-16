@@ -46,8 +46,7 @@ def get_tutorial(context):
 def get_price(context):
     # 成交量 比特幣（個）＊單價
     dayFilter = utils.dayFilterLogic(context)
-    if any("context" in s for s in ['預測', '預', '預估', '未來', '明天', '下']):
-        print('tomorrowgetPrice')
+    if any(txt in context for txt in ['預測', '預', '預估', '未來', '明天', '下']):
         output = WEB_API.get_ClosedPrice_Predict()['result']
         function = "getPrice"
     elif dayFilter == "unknown":
