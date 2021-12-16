@@ -22,7 +22,10 @@ def get_news(context):
 
 def get_trend(context):
     dayFilter = utils.dayFilterLogic(context)
-    if dayFilter == "unknown":
+    if "預測" in context:
+        result = WEB_API.get_ClosedPricePic_Predict()
+        output, function = {'img_url': result['result'], 'width': 1400, 'height': 1000}, "getTrend"
+    elif dayFilter == "unknown":
         output, function, status = gSearch(context)
     else:
         limitday = utils.get_date(dayFilter)
@@ -42,7 +45,10 @@ def get_tutorial(context):
 def get_price(context):
     # 成交量 比特幣（個）＊單價
     dayFilter = utils.dayFilterLogic(context)
-    if dayFilter == "unknown":
+    if "預測" in context:
+        output = WEB_API.get_ClosedPrice_Predict()['result']
+        function = "getPrice"
+    elif dayFilter == "unknown":
         output, function, status = gSearch(context)
     else:
         limitday = utils.get_date(dayFilter)
