@@ -6,9 +6,9 @@ def get_news(context):
     # 今天 昨天 正面 負面
     dayFilter = utils.dayFilterLogic(context)
     trend = None
-    if "正面" in context:
+    if any(txt in context for txt in ['正面', '正向', '正', '看多', '政', '鄭', '證', '証']):
         trend = "1"
-    elif "負面" in context:
+    elif any(txt in context for txt in ['負面', '負向', '負', '看空', '副','富', '付', '復']):
         trend = "0"
 
     if dayFilter == "unknown":
@@ -22,7 +22,8 @@ def get_news(context):
 
 def get_trend(context):
     dayFilter = utils.dayFilterLogic(context)
-    if "預測" in context:
+    print('y' if any(txt in context for txt in ['預測', '預', '預估', '未來', '明天', '下']) else 'n')
+    if any(txt in context for txt in ['預測', '預', '預估', '未來', '明天', '下']):
         result = WEB_API.get_ClosedPricePic_Predict()
         output, function = {'img_url': result['result'], 'width': 1400, 'height': 1000}, "getTrend"
     elif dayFilter == "unknown":
@@ -45,7 +46,8 @@ def get_tutorial(context):
 def get_price(context):
     # 成交量 比特幣（個）＊單價
     dayFilter = utils.dayFilterLogic(context)
-    if "預測" in context:
+    if any("context" in s for s in ['預測', '預', '預估', '未來', '明天', '下']):
+        print('tomorrowgetPrice')
         output = WEB_API.get_ClosedPrice_Predict()['result']
         function = "getPrice"
     elif dayFilter == "unknown":

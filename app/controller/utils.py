@@ -30,18 +30,22 @@ def plot_data(df, cryptocurrency='BTC', target_currency='USD', days=2000):
 
 
 def dayFilterLogic(context):
-
-    if "今天" in context:
+    Today_list = ['今天', '今日', '現在', '本日', '最新', '最近']
+    Yesterday_list = ['昨天', '昨日', '作天', '昨', '近兩天']
+    ThisWeek_list = ['本週', '本周', '這周', '本周','這個禮拜', '這禮拜']
+    ThisMonth_list = ['本月', '這個月']
+    ThisYear_list = ['今年', '本年', '這一年']
+    if any(txt in context for txt in Today_list):
         dayFilter = date.today()
-    elif "昨天" in context:
+    elif any(txt in context for txt in Yesterday_list):
         dayFilter = date.today() - timedelta(days=1)
-    elif "本週" in context:
+    elif any(txt in context for txt in ThisWeek_list):
         dayFilter = date.today() - timedelta(weeks=7)
-    elif "本月" in context:
+    elif any(txt in context for txt in ThisMonth_list):
         dayFilter = date.today() - timedelta(days=30)
-    elif "今年" in context:
+    elif any(txt in context for txt in ThisYear_list):
         dayFilter = date.today() - timedelta(days=365)
     else:
         dayFilter = "unknown"
-
+    print(dayFilter)
     return dayFilter
